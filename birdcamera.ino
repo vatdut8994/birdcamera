@@ -10,13 +10,17 @@
 
 //Lunenburg: c0p3nHag3n
 
+
+const char* ssid     = "SpectrumSetup-8265";   //input your wifi name
+const char* password = "routinewinter686";
+
 #include <ESP_Mail_Client.h>
 
-#define WIFI_SSID "SpectrumSetup-8265"
+#define WIFI_SSID ssid
 
-#define WIFI_PASSWORD "routinewinter686"
+#define WIFI_PASSWORD password
 
-#define SMTP_server "smtp.gmail.com"
+#define SMTP_server "smtp-mail.outlook.com"
 
 #define SMTP_Port 465
 
@@ -24,16 +28,13 @@
 
 #define sender_password "jxkb dgsu guib gthl"
 
-#define Recipient_email "vatdut8994@gmail.com"
+#define Recipient_email "vdutt@students.wcpss.net"
 
 #define Recipient_name "Mercer"
 
 #define CAMERA_MODEL_WROVER_KIT // Has PSRAM
 
 #include "camera_pins.h"
-
-const char* ssid     = "SpectrumSetup-8265";   //input your wifi name
-const char* password = "routinewinter686";   //input your wifi passwords
 
 
 int distanceThreshold = 0;
@@ -180,7 +181,7 @@ void loop() {
   Serial.println(bird_dist);
 
   if (bird_dist < 15){
-    delay(1000);
+    delay(500);
     if (distance() < 15){
         Serial.println("WE GOT A BIRD");
 
@@ -224,8 +225,7 @@ void loop() {
       
           Serial.println("Error sending Email, " + smtp.errorReason());
           
-//        delay(300000);
-          delay(60000);
+        delay(300000);
     }
   }
 }
