@@ -20,7 +20,7 @@ const char* password = "routinewinter686";
 
 #define WIFI_PASSWORD password
 
-#define SMTP_server "smtp-mail.outlook.com"
+#define SMTP_server "smtp.gmail.com"
 
 #define SMTP_Port 465
 
@@ -178,7 +178,6 @@ void setup() {
 
 void loop() {
   int bird_dist = distance();
-  Serial.println(bird_dist);
 
   if (bird_dist < 15){
     delay(500);
