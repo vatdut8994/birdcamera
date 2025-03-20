@@ -1,26 +1,27 @@
-import io
-import time
+from picamera2 import Picamera2
 import requests
-import picamera
+import time
+import io
 
 URL = "http://bceb7f41087d-7754001953109090881.ngrok-free.app/upload"  # Change to your server's IP
 
-# Initialize PiCamera
-camera = picamera.PiCamera()
-camera.resolution = (640, 480)  # Adjust resolution as needed
-camera.framerate = 20
-time.sleep(2)  # Allow camera to warm up
+# Initialize the camera
+picam2 = Picamera2()
+picam2.configure(picam2.create_still_configuration(main={"size": (640, 480)}))
+picam2.start()
 
-stream = io.BytesIO()
+time.sleep(2)  # Give camera time to warm up
 
-for _ in camera.capture_continuous(stream, format='jpeg', use_video_port=True):
-    stream.seek(0)
+while True:
+    frame = picam2.capture_array()
+    
+    # Encode as JPEG
+    stream = io.BytesIO()
+    picam2.capture_file(stream, format="jpeg")
+    
     try:
-        response = requests.post(URL, files={'image': ('frame.jpg', stream.read(), 'image/jpeg')})
+        response = requests.post(URL, files={'image': ('frame.jpg', stream.getvalue(), 'image/jpeg')})
     except requests.exceptions.RequestException as e:
         print(f"Error sending frame: {e}")
-
-    stream.seek(0)
-    stream.truncate()
-
-    time.sleep(0.05)  # Adjust sleep to control frame rate
+    
+    time.sleep(0.05)  # Adjust for desired frame rate
