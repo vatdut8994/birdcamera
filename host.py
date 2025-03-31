@@ -5,6 +5,19 @@ from flask_compress import Compress
 from PIL import Image
 import io
 
+import requests
+
+def get_public_ip():
+    try:
+        response = requests.get('https://api.ipify.org')
+        public_ip = response.text
+        print(f'Your public IP address is: {public_ip}')
+    except requests.exceptions.RequestException as e:
+        print(f'Error fetching public IP address: {e}')
+
+get_public_ip()
+
+
 app = Flask(__name__)
 Compress(app)  # Enable compression
 
