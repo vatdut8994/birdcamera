@@ -5,19 +5,6 @@ from flask_compress import Compress
 from PIL import Image
 import io
 
-import requests
-
-def get_public_ip():
-    try:
-        response = requests.get('https://api.ipify.org')
-        public_ip = response.text
-        print(f'Your public IP address is: {public_ip}')
-    except requests.exceptions.RequestException as e:
-        print(f'Error fetching public IP address: {e}')
-
-get_public_ip()
-
-
 app = Flask(__name__)
 Compress(app)  # Enable compression
 
@@ -27,7 +14,7 @@ os.makedirs(SAVE_PATH, exist_ok=True)
 
 @app.route("/")
 def home():
-    return "the game's on baby"
+    return "Congrats bro it finally works"
 
 @app.route('/upload', methods=['POST'])
 def upload():
@@ -63,4 +50,4 @@ def video_feed():
     return Response(generate(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=7777, debug=False, threaded=True)
+    app.run(host='0.0.0.0', port=8888, debug=False, threaded=True)
