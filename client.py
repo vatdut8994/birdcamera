@@ -4,7 +4,7 @@ import requests
 import time
 from picamera2 import Picamera2
 
-URL = "http://bceb7f41087d-7754001953109090881.ngrok-free.app/upload"  # Change to your server's IP
+URL = "http://75.183.209.207:9265/upload"  # Change to your server's IP
 
 # Initialize the camera
 picam2 = Picamera2()
@@ -22,6 +22,7 @@ while True:
     try:
         requests.post(URL, files={'image': ('frame.jpg', img_encoded.tobytes(), 'image/jpeg')}, timeout=0.5)
     except requests.exceptions.RequestException:
+        print("error")
         pass  # Ignore occasional network errors
     
-    time.sleep(0.02)  # Adjust sleep time for 30-50 FPS
+    # time.sleep(0.02)  # Adjust sleep time for 30-50 FPS
