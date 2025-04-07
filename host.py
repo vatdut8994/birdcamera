@@ -1,21 +1,9 @@
 import os
 from datetime import datetime
-from flask import Flask, request, Response
+from flask import Flask, request, Response, send_file
 from flask_compress import Compress
 from PIL import Image
 import io
-
-import requests
-
-def get_public_ip():
-    try:
-        response = requests.get('https://api.ipify.org')
-        public_ip = response.text
-        print(f'Your public IP address is: {public_ip}')
-    except requests.exceptions.RequestException as e:
-        print(f'Error fetching public IP address: {e}')
-
-get_public_ip()
 
 
 app = Flask(__name__)
@@ -40,12 +28,19 @@ def upload():
         except Exception as e:
             return "Invalid image", 400
 
-        # Save image with timestamp when motion is detected
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        save_file_path = os.path.join(SAVE_PATH, f"{timestamp}.jpg")
-        latest_frame.save(save_file_path, format="JPEG")
-
     return "Frame received", 200
+
+@app.route('/latest', methods=['GET'])
+def get_latest():
+    global latest_frame
+    if latest_frame is None:
+        return "No frame available yet", 404
+
+    img_io = io.BytesIO()
+    latest_frame.save(img_io, format='JPEG')  # Save the PIL Image into the buffer
+    img_io.seek(0)  # Important: go back to the start of the buffer
+    return send_file(img_io, mimetype='image/jpeg')
+
 
 def generate():
     global latest_frame
