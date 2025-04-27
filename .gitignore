@@ -3,3 +3,5 @@ venv/
 
 # Ignore recordings directory
 recordings/
+
+.DS_Store
